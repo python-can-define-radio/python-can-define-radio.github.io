@@ -79,46 +79,6 @@
 			height: 100%;
 			margin: 0;
 			line-height: 50px;
-			-moz-transform: translateX(100%);
-			-webkit-transform: translateX(100%);
-			transform: translateX(100%);
-			-moz-animation: scrolling 15s linear infinite;
-			-webkit-animation: scrolling 15s linear infinite;
-			animation: scrolling 15s linear infinite;
-		}
-
-		@-moz-keyframes scrolling {
-			0% {
-				-moz-transform: translateX(100%);
-			}
-
-			100% {
-				-moz-transform: translateX(-100%);
-			}
-		}
-
-		@-webkit-keyframes scrolling {
-			0% {
-				-webkit-transform: translateX(100%);
-			}
-
-			100% {
-				-webkit-transform: translateX(-100%);
-			}
-		}
-
-		@keyframes scrolling {
-			0% {
-				-moz-transform: translateX(100%);
-				-webkit-transform: translateX(100%);
-				transform: translateX(100%);
-			}
-
-			100% {
-				-moz-transform: translateX(-100%);
-				-webkit-transform: translateX(-100%);
-				transform: translateX(-100%);
-			}
 		}
 
 		.container {
@@ -375,12 +335,13 @@
 
 <body style="background: #8cff45">
 	<hr>
+	<input type="color" id="colorPicker">
 	<div class="scrolling">
 		<h1>Welcome to Python Can Define Radio.</h1>
 	</div>
 	<div id="navbar">
 		<a class="active" href="https://github.com/python-can-define-radio" target="_blank"><i
-				class="fa fa-fw fa-home"></i> Home</a>
+			class="fa fa-plane"></i> PCDR</a>
 		<div class="dropdown">
 			<button class="dropbtn"><i class="fa fa-git"></i> Python
 				<i class="fa fa-caret-down"></i>
@@ -471,6 +432,10 @@
 				navbar.classList.remove("sticky");
 			}
 		}
+		const colorPicker = document.getElementById("colorPicker");
+		colorPicker.addEventListener("input", function() {document.body.style.backgroundColor = this.value;
+		});
+
 	</script>
 
 </body>
