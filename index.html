@@ -335,7 +335,8 @@
 
 <body style="background: #8cff45">
 	<hr>
-	<input type="color" id="colorPicker">
+	<input type="color" id="colorPicker"> Choose your background color.<br/>
+	<input type="color" id="colorPicker2"> Choose your foreground color.
 	<div class="scrolling">
 		<h1>Welcome to Python Can Define Radio.</h1>
 	</div>
@@ -396,8 +397,8 @@
 				src="./images/python_logo.png" alt="Python Logo"></a>
 	</div>
 	<hr>
-	<div class="container">
-		<p>Check out the following Resources</p>
+	<div class="container" id="container">
+		<p>Check out the following resource pages</p>
 		<div class="links">
 			<div id="LINKSLEFT">
 				<a class="button"
@@ -433,9 +434,15 @@
 			}
 		}
 		const colorPicker = document.getElementById("colorPicker");
+		const colorPicker2 = document.getElementById("colorPicker2");
+		const thisid = document.getElementById("BORDER1");
+		const thisid2 = document.getElementById("container");
 		colorPicker.addEventListener("input", function() {document.body.style.backgroundColor = this.value;
 		});
-
+		colorPicker2.addEventListener("input", function() {thisid.style.backgroundColor = this.value;
+		});
+		colorPicker2.addEventListener("input", function() {thisid2.style.backgroundColor = this.value;
+		});
 	</script>
 
 </body>
