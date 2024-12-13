@@ -4,10 +4,108 @@
 		<title>Python can define radio</title>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+			<style>
+			#navbar {
+  			width: 90%;
+  			background-color: #1212edf5;
+  			overflow: auto;
+  			border-radius: 20px;
+  			opacity: 100%;
+  			margin-left: 7%;
+  			border: 1px solid black;
+			}
+			#navbar a {
+  			float: left;
+  			padding: 12px;
+  			color: white;
+  			text-decoration: none;
+  			font-size: 18px;
+			}
+			#navbar a:hover {
+  			background-color: #000;
+			}
+				.dropdown {
+  			float: left;
+  			overflow: hidden;
+			}
+		/* Dropdown button */
+			.dropdown .dropbtn {
+  			font-size: 18px;
+  			border: none;
+  			cursor: pointer;
+  			outline: none;
+  			color: white;
+  			padding: 14px 16px;
+  			background-color: inherit;
+  			font-family: inherit; /* Important for vertical align on mobile phones */
+  			margin: 0; /* Important for vertical align on mobile phones */
+			}
+		/* Add a red background color to navbar links on hover */
+			#navbar a:hover, .dropdown:hover .dropbtn {
+  			background-color: red;
+			}
+		/* Dropdown content (hidden by default) */
+			.dropdown-content {
+  			display: none;
+  			position: absolute;
+  			background-color: black;
+  			min-width: 160px;
+  			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  			z-index: 1;
+			}
+		/* Links inside the dropdown */
+			.dropdown-content a {
+  			float: none;
+  			color: black;
+  			padding: 12px 16px;
+  			text-decoration: none;
+  			display: block;
+  			text-align: left;
+			}
+		/* Show the dropdown menu on hover */
+			.dropdown:hover .dropdown-content {
+  			display: block;
+			}
+			.active {
+  			background-color: #04AA6D;
+  			height: 50px;
+			}
+			</style>
 </head>
 <body>
 
 <p>This is the website for Python can define radio. <a href='https://www.mycomicshop.com/' id="easter" target="_blank">&#12463; &#12523; &#12532; &#12449; &#12522; &#12531;</a></p>
-  
+<div id="navbar">
+  <a class="active" href="./index.html"><i class="fa fa-fw fa-home"></i> Home</a> 
+  <a href="./Quick_Links/contactme.html"><i class="fa fa-fw fa-envelope"></i> Contact</a> 
+  <a href="http://www.msn.com"><i class="fa fa-newspaper-o"></i> News</a>
+  <a href="javascript:void(0)"><i class="fa fa-fw fa-user"></i> Login</a>
+  <div class="dropdown">
+    <button class="dropbtn"><i class="fa fa-link"></i>  Links
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="./Quick_Links/fun_links.html">Fun Links</a>
+      <a href="./Quick_Links/game_links.html">Game Links</a>
+      <a href="./Quick_Links/learning_links.html">Learning Links</a>
+    </div>
+  </div>
+
+
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("navbar");
+var sticky = navbar.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+</script>
 </body>
 </html>
