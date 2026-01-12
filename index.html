@@ -1,198 +1,450 @@
 <!DOCTYPE html>
-<title>WAVE</title>
-<meta charset="UTF-8">
-<html>
-  <head>
-    <link rel="icon" href="data:image/svg+xml,
-      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-        <text y='.9em' font-size='90'>🌊</text>
-      </svg>
-    ">
-    <script type="module" src="target/src/main.js"></script>
-    <script type="module" src="core.js"></script>
+<html lang="en">
 
-    <style type="text/css">
-      body {
-        background-color: #444;
-        color: white;
-        font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
-        overflow: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+	<title>Python can define radio</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-      #container {
-        display: inline-block;
-        overflow: hidden;
-        position: relative;
-        transform: translate(-50%, -50%);
-        top: 50%;
-        left: 50%;
-      }
+	<style>
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
 
-      #container.small>#inner {
-        height: 360px;
-        width: 640px;
-      }
+		body {
+			height: 100vh;
+			position: relative;
+			font-family: "Anton", sans-serif;
+			justify-content: center;
+			align-items: center;
+		}
 
-      #container.large>#inner {
-        height: 720px;
-        width: 1080px;
-      }
+		#BORDER1 img {
+			border: 15px groove green;
+			height: 250px;
+			display: inline-block;
+		}
 
-      #container.fullscreen,
-      #container.fullscreen>#inner {
-        position: absolute;
-        transform: none;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-      }
+		p {
+			text-align: center;
+			color: #1721d3;
+			font-size: 1.5em;
+			margin-left: 100px;
+			margin-right: 100px;
+		}
 
-      #container>#inner>canvas {
-        image-rendering: crisp-edges;
-        image-rendering: pixelated;
-        width: 100%;
-        height: 100%;
-      }
+		#BORDER1 {
+			background-color: #edaa3099;
+			padding: 10px;
+			text-align: center;
+		}
 
-      #container>#inner>#cursor,
-      #container>#inner>#click-to-resume {
-        color: white;
-        left: 50%;
-        top: 50%;
-        font-size: 16px;
-        position: absolute;
-        transform: translate(-50%, -50%);
-        user-select: none;
-      }
+		#LINKSLEFT {
+			font-family: Comic Sans MS;
+			font-size: 20px;
+			float: left;
+		}
 
-      #container>#inner>#click-to-resume {
-        background-color: #9f6;
-        border-radius: 8px;
-        color: black;
-        cursor: pointer;
-        display: none;
-        padding: 16px 32px;
-      }
+		#LINKSRIGHT {
+			font-family: Comic Sans MS;
+			font-size: 20px;
+			float: right;
+		}
 
-      #container.paused>#inner>#click-to-resume {
-        display: block;
-      }
-      #container.paused>#inner>canvas {
-        opacity: 0.5;
-      }
+		#LINKSCENTER {
+			font-family: Comic Sans MS;
+			font-size: 20px;
+			text-align: center;
+		}
 
-      #stats {
-        background-color: #222;
-        border-radius: 4px;
-        color: white;
-        font-family: monospace;
-        opacity: 0.75;
-        padding: 4px 8px;
-        position: absolute;
-        right: 12px;
-        top: 12px;
-        white-space: pre;
-      }
+		.scrolling {
+			height: 60px;
+			width: 80%;
+			margin-left: 10%;
+			overflow: hidden;
+			position: relative;
+		}
 
-      #title, #controls {
-        display: none;
-      }
-      #container.small>#title, #container.small>#controls {
-        display: block;
-      }
+		.scrolling h1 {
+			color: #1721d3;
+			text-align: center;
+			font-size: 40px;
+			font-family: 'Arima Madurai', cursive;
+			letter-spacing: -3px;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			line-height: 50px;
+		}
 
-      #title {
-        font-size: 12px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      #title>.heading {
-        font-size:48px;
-      }
-      #title>.heading {
-        font-size: 24px;
-        margin-bottom: 8px;
-      }
-      #title>div {
-        margin-bottom: 4px;
-      }
-      #title>:last-child {
-        margin-bottom: 0;
-      }
-      #title a {
-        color: #9f6;
-      }
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			background: #edaa3099;
+			height: 250px;
+		}
 
-      #controls {
-        font-size: 12px;
-        margin-top: 16px;
-        text-align: center;
-      }
-      #controls>.heading {
-        font-size: 16px;
-        margin-bottom: 8px;
-      }
-      #controls>table {
-        margin: 0 auto;
-      }
-      #controls>table th.key {
-        padding: 2px 4px 0 16px;
-        text-align: right;
-      }
-      #controls>table td.val {
-        padding: 2px 16px 0 4px;
-        text-align: left;
-      }
-    </style>
-  </head>
+		.links {
+			display: grid;
+			width: 800px;
+			height: 200px;
+			grid-template-columns: auto auto auto;
+			margin-top: 30px;
+		}
 
-  <body>
-    <div id="container" class="paused">
-      <div id="title">
-        <div class="heading">WAVE: WebAssembly Voxel Engine</div>
-        <div>
-          If you have a discrete GPU,
-          <a href="?size=large&antialias=1">click here</a> for a larger view,
-          <a href="?size=fullscreen&antialias=1">or go fullscreen</a>.
-        </div>
-        <div>
-          This engine is open-source.
-          <a href="https://github.com/skishore/voxels">
-            Fork this code on GitHub!
-          </a>
-        </div>
-      </div>
-      <div id="inner">
-        <canvas></canvas>
-        <div id="cursor">+</div>
-        <div id="click-to-resume">Paused - click to resume.</div>
-      </div>
-      <div id="controls">
-        <div class="heading">Controls:</div>
-        <table>
-          <tr>
-            <th class="key">WASD:</th><td class="val">move</td>
-            <th class="key">Left-click:</th><td class="val">destroy a block</td>
-          </tr>
-          <tr>
-            <th class="key">Mouse:</th><td class="val">look around</td>
-            <th class="key">Right-click:</th><td class="val">create a block</td>
-          </tr>
-          <tr>
-            <th class="key">Space/E:</th><td class="val">jump/hover</td>
-            <th class="key">Scroll up/down:</th><td class="val">zoom in/out</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div id="stats"></div>
-  </body>
+		.button {
+			color: #fff !important;
+			text-transform: uppercase;
+			text-decoration: none;
+			background: #1721d3;
+			padding: 10px;
+			border-radius: 25px;
+			display: inline-block;
+			border: none;
+			transition: all 0.4s ease 0s;
+		}
+
+		.button:hover {
+			background: #434343;
+			letter-spacing: 1px;
+			-webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+			-moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+			box-shadow: 5px 40px 10px rgba(0, 0, 0, 0.57);
+			text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+			transition: all 0.4s ease 0s;
+			border-radius: 0px;
+			font-weight: 700;
+		}
+
+		#navbar {
+			width: 90%;
+			background-color: #1212edf5;
+			overflow: auto;
+			border-radius: 20px;
+			opacity: 100%;
+			margin-left: 7%;
+			border: 1px solid black;
+		}
+
+		#navbar a {
+			float: left;
+			padding: 12px;
+			color: white;
+			text-decoration: none;
+			font-size: 18px;
+		}
+
+		#navbar a:hover {
+			background-color: #000;
+		}
+
+		.active {
+			background-color: #04AA6D;
+			height: 50px;
+		}
+
+		.dropdown {
+			float: left;
+			overflow: hidden;
+		}
+
+		.dropdown .dropbtn {
+			font-size: 18px;
+			border: none;
+			cursor: pointer;
+			outline: none;
+			color: white;
+			padding: 14px 16px;
+			background-color: inherit;
+			font-family: inherit;
+			margin: 0;
+		}
+
+		#navbar a:hover,
+		.dropdown:hover .dropbtn {
+			background-color: #434343;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: black;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+		}
+
+		.dropdown-content a {
+			float: none;
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			text-align: left;
+		}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		.icon-bar {
+			position: fixed;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			transform: translateY(-50%);
+		}
+
+		.icon-bar a {
+			display: block;
+			text-align: center;
+			padding: 16px;
+			transition: all 0.3s ease;
+			color: white;
+			font-size: 20px;
+		}
+
+		.icon-bar a:hover {
+			background-color: #000;
+		}
+
+		.google {
+			background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+			color: black;
+			border-radius: 50%;
+		}
+
+		.linkedin {
+			background: #007bb5;
+			color: white;
+			border-radius: 50%;
+		}
+
+		.youtube {
+			background: grey;
+			color: white;
+			border-radius: 50%;
+		}
+
+		.globe {
+			background: white;
+			color: white;
+			border-radius: 50%;
+		}
+
+		.fa_globe {
+			color: #0099CC
+		}
+
+		.fa_utube {
+			color: white
+		}
+
+		.fa_link {
+			color: yellow
+		}
+
+		.fa_goog {
+			color: black
+		}
+
+		.content {
+			margin-left: 75px;
+			font-size: 30px;
+		}
+
+		.sticky {
+			position: fixed;
+			top: 0;
+			width: 100%;
+		}
+
+		.sticky+.content {
+			padding-top: 60px;
+		}
+
+		#navbar input[type=text] {
+			float: right;
+			padding: 6px;
+			border: none;
+			margin-right: 16px;
+			margin-top: 8px;
+			font-size: 17px;
+		}
+
+		/* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
+		@media screen and (max-width: 600px) {
+
+			#navbar a,
+			#navbar input[type=text],
+			#navbar .search-container button {
+				float: none;
+				display: block;
+				text-align: left;
+				width: 100%;
+				margin: 0;
+				padding: 14px;
+			}
+
+			#navbar input[type=text] {
+				border: 1px solid #ccc;
+			}
+		}
+
+		#navbar .search-container {
+			float: right;
+		}
+
+		#navbar .search-container button {
+			float: right;
+			padding: 6px 10px;
+			margin-right: 5px;
+			margin-top: 8px;
+			background: #ddd;
+			font-size: 17px;
+			border: none;
+			cursor: pointer;
+			border-radius: 50%;
+		}
+
+		#navbar .search-container button:hover {
+			background: #ccc;
+		}
+
+		.window {
+			margin-left: 35%;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(-45deg, #0a1433 0%, #222b3f 100%);
+			border-radius: 100%;
+			overflow: hidden;
+		}
+
+		.small_font {
+			font-size: 12px;
+			color: #434343;
+		}
+	</style>
+</head>
+
+<body style="background: #8cff45">
+	<hr>
+	<input type="color" id="colorPicker"> Choose your background color.<br/>
+	<input type="color" id="colorPicker2"> Choose your foreground color.
+	<div class="scrolling">
+		<h1>Welcome to Python Can Define Radio.</h1>
+	</div>
+	<div id="navbar">
+		<a class="active" href="https://github.com/python-can-define-radio" target="_blank"><i
+			class="fa fa-plane"></i> PCDR</a>
+		<div class="dropdown">
+			<button class="dropbtn"><i class="fa fa-git"></i> Python
+				<i class="fa fa-caret-down"></i>
+			</button>
+			<div class="dropdown-content">
+				<a href='https://github.com/python-can-define-radio/python-course/tree/main/classroom_activities'
+					target="_blank">Python lessons</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn"><i class="fa fa-git"></i> SDR
+				<i class="fa fa-caret-down"></i>
+			</button>
+			<div class="dropdown-content">
+				<a href='https://github.com/python-can-define-radio/sdr-course/tree/main/classroom_activities'
+					target="_blank">SDR lessons</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn"><i class="fa fa-link"></i> Other Links
+				<i class="fa fa-caret-down"></i>
+			</button>
+			<div class="dropdown-content">
+				<a href='https://github.com/python-can-define-radio/python-course/blob/main/resources/README.md'
+					target="_blank">Python resources</a>
+				<a href='https://github.com/python-can-define-radio/sdr-course/tree/main/resources/README.md'
+					target="_blank">SDR resources</a>
+				<a href='./images/galleries/accordion.html' target="_blank">Image Gallery</a>
+			</div>
+		</div>
+		<div class="search-container">
+			<form action="/action_page.php">
+				<input type="text" placeholder="Search.." name="search">
+				<button type="submit"><i class="fa fa-search"></i></button>
+			</form>
+		</div>
+	</div>
+	<div class="icon-bar">
+		<a href="https://www.linkedin.com" class="linkedin" target="_blank"><i
+				class="fa fa-linkedin-square fa_link fa-2x"></i></a>
+		<a href="./utu.html" class="youtube" target="_blank"><i class="fa fa-youtube fa_utube fa-2x"></i></a>
+		<a href="https://www.google.com" class="google" target="_blank"><i class="fa fa-google fa_goog fa-2x"></i></a>
+		<a href="https://www.comptia.org" class="globe" target="_blank"><i class="fa fa-globe fa_globe fa-2x"></i></a>
+	</div>
+	<hr>
+	<div id="BORDER1">
+		<a href='https://github.com/python-can-define-radio/python-course' target="_blank"><img
+				src="./images/python_logo.png" alt="Python Logo"></a>
+		<a href='https://github.com/python-can-define-radio/sdr-course' target="_blank"><img src="./images/hackrf.jpeg"
+				alt="Picture of a HackrfOne"></a>
+		<a href='https://github.com/python-can-define-radio/python-course' target="_blank"><img
+				src="./images/python_logo.png" alt="Python Logo"></a>
+	</div>
+	<hr>
+	<div class="container" id="container">
+		<p>Check out the following resource pages</p>
+		<div class="links">
+			<div id="LINKSLEFT">
+				<a class="button"
+					href='https://github.com/python-can-define-radio/python-course/blob/main/resources/README.md'
+					target="_blank">Python resources</a>
+			</div>
+			<div id="LINKSCENTER">
+				<a class="button"
+					href='https://github.com/python-can-define-radio/sdr-course/tree/main/resources/README.md'
+					target="_blank">SDR resources</a>
+				<br>
+
+			</div>
+			<div id="LINKSRIGHT">
+				<a class='button' href='./images/galleries/accordion.html' target="_blank">Image Gallery</a>
+			</div>
+		</div>
+	</div>
+	<p class="small_font"><b>Hosted by:</b><br />
+		<em>James-pcdr<br />Wolverine-itb-pcdr<br />PapaBirdy<br />cm-pcdr<br />TaelorS</em></p>
+
+	<script>
+		window.onscroll = function () { myFunction() };
+
+		var navbar = document.getElementById("navbar");
+		var sticky = navbar.offsetTop;
+
+		function myFunction() {
+			if (window.pageYOffset >= sticky) {
+				navbar.classList.add("sticky")
+			} else {
+				navbar.classList.remove("sticky");
+			}
+		}
+		const colorPicker = document.getElementById("colorPicker");
+		const colorPicker2 = document.getElementById("colorPicker2");
+		const thisid = document.getElementById("BORDER1");
+		const thisid2 = document.getElementById("container");
+		colorPicker.addEventListener("input", function() {document.body.style.backgroundColor = this.value;
+		});
+		colorPicker2.addEventListener("input", function() {thisid.style.backgroundColor = this.value;
+		});
+		colorPicker2.addEventListener("input", function() {thisid2.style.backgroundColor = this.value;
+		});
+	</script>
+
+</body>
+
 </html>
