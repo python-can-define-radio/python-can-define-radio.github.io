@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VSWR & Standing Wave Demo</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    background: #111;
+    color: #eee;
+    text-align: center;
+  }
+  canvas {
+    background: #000;
+    border: 1px solid #444;
+    margin-top: 10px;
+  }
+  .controls {
+    margin-top: 15px;
+  }
+  label {
+    display: block;
+    margin: 8px 0 4px;
+  }
+</style>
+</head>
+<body>
+
+<h2>Transmitted, Reflected, and Standing Waves</h2>
+<p>
+Green = Forward wave &nbsp; | &nbsp;
+Red = Reflected wave &nbsp; | &nbsp;
+White = Standing wave
+</p>
+
+<div style="display:flex; justify-content:center; align-items:flex-start; gap:20px;">
+  <div id="hud" style="
+    width:200px;
+    text-align:left;
+    font-size:16px;
+    background:#181818;
+    padding:10px;
+    border:1px solid #444;">
+    <strong>VSWR</strong><br>
+    <span id="vswrVal">1.00 : 1</span><br><br>
+    <strong>|Γ|</strong><br>
+    <span id="gammaVal">0.00</span><br><br>
+    <strong>Reflected Power</strong><br>
+    <span id="reflVal">0%</span><br><br>
+    <strong>Vmax</strong><br>
+    <span id="vmaxVal">0.00</span><br>
+    <strong>Vmin</strong><br>
+    <span id="vminVal">0.00</span>
+  </div>
+
+  <canvas id="waveCanvas" width="900" height="300"></canvas>
+</div>
+
+<button id="pauseBtn" style="margin-top:10px;">Pause</button>
+
+<div class="controls">
+  <label>
+    Reflected Power (%):
+    <input type="range" id="reflSlider" min="0" max="100" step="1" value="25">
+    <span id="reflSliderVal">25%</span>
+  </label>
+</div>
+
+<script>
+const canvas = document.getElementById("waveCanvas");
+const ctx = canvas.getContext("2d");
+
+const reflSlider = document.getElementById("reflSlider");
+const reflSliderVal = document.getElementById("reflSliderVal");
+
+const vswrVal = document.getElementById("vswrVal");
+const gammaVal = document.getElementById("gammaVal");
+const reflVal = document.getElementById("reflVal");
+const vmaxVal = document.getElementById("vmaxVal");
+const vminVal = document.getElementById("vminVal");
+const pauseBtn = document.getElementById("pauseBtn");
+
+let t = 0;
+let paused = false;
+
+pauseBtn.onclick = () => {
+  paused = !paused;
+  pauseBtn.textContent = paused ? "Resume" : "Pause";
+};
+
+// Convert reflected power % to |Γ|
+function gammaFromPower(percent) {
+  return Math.sqrt(percent / 100);
+}
+
+// Compute VSWR from |Gamma|
+function calculateVSWR(gamma) {
+  if (gamma >= 0.999) return "∞ : 1";
+  return ((1 + gamma) / (1 - gamma)).toFixed(2) + " : 1";
+}
+
+// Compute Vmax and Vmin for HUD (scaled ×10)
+function computeVmaxVmin(gamma) {
+  const scaleHUD = 10;
+  return { vmax: (1 + gamma) * scaleHUD, vmin: (1 - gamma) * scaleHUD };
+}
+
+function drawAxes(midY, k, yScale) {
+  ctx.strokeStyle = "#444";
+  ctx.fillStyle = "#aaa";
+  ctx.font = "12px sans-serif";
+
+  // X-axis
+  ctx.beginPath();
+  ctx.moveTo(0, midY);
+  ctx.lineTo(canvas.width, midY);
+  ctx.stroke();
+
+  // X ticks every quarter wavelength
+  const lambda = 2 * Math.PI / k;
+  for (let x = 0; x <= canvas.width; x += lambda / 4) {
+    ctx.beginPath();
+    ctx.moveTo(x, midY - 5);
+    ctx.lineTo(x, midY + 5);
+    ctx.stroke();
+  }
+
+  // Y-axis ticks from -20 to 20, step 5
+  for (let v = -20; v <= 20; v += 5) {
+    const y = midY - v * yScale / 10; // divide by 10 to fit plot
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(8, y);
+    ctx.stroke();
+    ctx.fillText(v.toString(), 10, y + 4);
+  }
+}
+
+function drawWave() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const midY = canvas.height / 2;
+  const wavelengthsOnScreen = 2.5;
+  const lambda = canvas.width / wavelengthsOnScreen;
+  const k = 2 * Math.PI / lambda;
+  const omega = 0.05;
+
+  const reflPercent = parseFloat(reflSlider.value);
+  reflSliderVal.textContent = reflPercent.toFixed(0) + "%";
+
+  const gammaMag = gammaFromPower(reflPercent);
+
+  const yScalePlot = 60; // plot scale to fit canvas
+  drawAxes(midY, k, yScalePlot);
+
+  // Forward wave (green)
+  ctx.strokeStyle = "lime";
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x++) {
+    const y = Math.sin(k * x - omega * t);
+    ctx.lineTo(x, midY - y * yScalePlot);
+  }
+  ctx.stroke();
+
+  // Reflected wave (red)
+  ctx.strokeStyle = "red";
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x++) {
+    const y = gammaMag * Math.sin(k * x + omega * t);
+    ctx.lineTo(x, midY - y * yScalePlot);
+  }
+  ctx.stroke();
+
+  // Standing wave (white)
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x++) {
+    const v = Math.sin(k * x - omega * t) + gammaMag * Math.sin(k * x + omega * t);
+    ctx.lineTo(x, midY - v * yScalePlot);
+  }
+  ctx.stroke();
+  ctx.lineWidth = 1;
+
+  // Update HUD
+  const { vmax, vmin } = computeVmaxVmin(gammaMag);
+  vswrVal.textContent = calculateVSWR(gammaMag);
+  gammaVal.textContent = gammaMag.toFixed(2);
+  reflVal.textContent = reflPercent.toFixed(0) + "%";
+  vmaxVal.textContent = vmax.toFixed(2);
+  vminVal.textContent = vmin.toFixed(2);
+
+  if (!paused) t++;
+  requestAnimationFrame(drawWave);
+}
+
+drawWave();
+</script>
+
+</body>
+</html>
