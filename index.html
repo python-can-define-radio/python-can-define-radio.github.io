@@ -335,14 +335,14 @@
 
 <body style="background: #8cff45">
 	<hr>
-	<input type="color" id="colorPicker"> Choose your background color.<br/>
+	<input type="color" id="colorPicker"> Choose your background color.<br />
 	<input type="color" id="colorPicker2"> Choose your foreground color.
 	<div class="scrolling">
 		<h1>Welcome to Python Can Define Radio.</h1>
 	</div>
 	<div id="navbar">
-		<a class="active" href="https://github.com/python-can-define-radio" target="_blank"><i
-			class="fa fa-plane"></i> PCDR</a>
+		<a class="active" href="https://github.com/python-can-define-radio" target="_blank"><i class="fa fa-plane"></i>
+			PCDR</a>
 		<div class="dropdown">
 			<button class="dropbtn"><i class="fa fa-git"></i> Python
 				<i class="fa fa-caret-down"></i>
@@ -371,6 +371,10 @@
 				<a href='https://github.com/python-can-define-radio/sdr-course/tree/main/resources/README.md'
 					target="_blank">SDR resources</a>
 				<a href='./images/galleries/accordion.html' target="_blank">Image Gallery</a>
+				<a href="https://mynasadata.larc.nasa.gov/basic-page/electromagnetic-spectrum-diagram" class="spectrum"
+					target="_blank">High res Spectrum chart</a>
+				<a href="./common_and_letter_bands.html" class="bands" target="_blank">Spectrum diagram showing common
+					names and letter bands</a>
 			</div>
 		</div>
 		<div class="search-container">
@@ -388,11 +392,7 @@
 		<a href="https://www.comptia.org" class="globe" target="_blank"><i class="fa fa-globe fa_globe fa-2x"></i></a>
 	</div>
 	<hr>
-	<div>
-		<a href="https://mynasadata.larc.nasa.gov/basic-page/electromagnetic-spectrum-diagram" class="spectrum" target="_blank">High res Spectrum chart</a>
-		<a href="./common_and_letter_bands.html" class="bands" target="_blank"></a>
-	</div>
-		
+
 	<div id="BORDER1">
 		<a href='https://github.com/python-can-define-radio/python-course' target="_blank"><img
 				src="./images/python_logo.png" alt="Python Logo"></a>
@@ -423,7 +423,8 @@
 		</div>
 	</div>
 	<p class="small_font"><b>Hosted by:</b><br />
-		<em>James-pcdr<br />Wolverine-itb-pcdr<br />PapaBirdy<br />cm-pcdr<br />TaelorS</em></p>
+		<em>James-pcdr<br />Wolverine-itb-pcdr<br />PapaBirdy<br />cm-pcdr<br />TaelorS</em>
+	</p>
 
 	<script>
 		window.onscroll = function () { myFunction() };
@@ -442,11 +443,14 @@
 		const colorPicker2 = document.getElementById("colorPicker2");
 		const thisid = document.getElementById("BORDER1");
 		const thisid2 = document.getElementById("container");
-		colorPicker.addEventListener("input", function() {document.body.style.backgroundColor = this.value;
+		colorPicker.addEventListener("input", function () {
+			document.body.style.backgroundColor = this.value;
 		});
-		colorPicker2.addEventListener("input", function() {thisid.style.backgroundColor = this.value;
+		colorPicker2.addEventListener("input", function () {
+			thisid.style.backgroundColor = this.value;
 		});
-		colorPicker2.addEventListener("input", function() {thisid2.style.backgroundColor = this.value;
+		colorPicker2.addEventListener("input", function () {
+			thisid2.style.backgroundColor = this.value;
 		});
 	</script>
 
