@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RF Spectrum — Common Names & Letter Bands</title>
+<style>
+  body { font-family: sans-serif; background: #0f172a; color: #e5e7eb; margin:2rem; }
+  svg { background: #020617; margin-top: 20px; border-radius: 6px; }
+  .band-box { stroke: #fff; stroke-width:1; fill-opacity:0.6; }
+  .band-label { font-size:12px; fill:#fff; text-anchor:middle; font-weight:bold; }
+  .band-range { font-size:10px; fill:#cbd5f5; text-anchor:middle; }
+  .connector { stroke:#fff; stroke-width:1; stroke-dasharray:4; opacity:0.8; }
+  .vertical-guide { stroke:#fff; stroke-width:1; stroke-dasharray:4; opacity:0.3; }
+  /* Common name colors */
+  .ELF { fill:#1e3a8a; } .SLF { fill:#2563eb; } .ULF { fill:#3b82f6; } 
+  .VLF { fill:#0ea5e9; } .LF { fill:#14b8a6; } .MF { fill:#22c55e; }
+  .HF { fill:#84cc16; } .VHF { fill:#facc15; } .UHF { fill:#f97316; }
+  .SHF { fill:#f43f5e; } .EHF { fill:#e11d48; }
+  /* Letter band colors */
+  .L { fill:#38bdf8; } .S { fill:#818cf8; } .C { fill:#a78bfa; } 
+  .X { fill:#f472b6; } .Ku { fill:#fb7185; } .K { fill:#f97316; } 
+  .Ka { fill:#84cc16; } .V { fill:#22c55e; } .W { fill:#14b8a6; }
+</style>
+</head>
+<body>
+
+<h1>RF Spectrum — Common Names & Letter Bands</h1>
+<svg id="spectrum" width="1100" height="400" viewBox="0 0 1100 400"></svg>
+
+<script>
+const svgNS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById('spectrum');
+const fmin = 1;      // 1 Hz
+const fmax = 3e11;   // 300 GHz
+const width = 1000;
+const minWidth = 60; // minimum box width
+const boxHeight = 40;
+
+// Common names (logarithmic)
+const commonNames = [
+  {name:'ELF', start:3, end:30, class:'ELF'},
+  {name:'SLF', start:30, end:300, class:'SLF'},
+  {name:'ULF', start:300, end:3000, class:'ULF'},
+  {name:'VLF', start:3000, end:30000, class:'VLF'},
+  {name:'LF', start:30000, end:300000, class:'LF'},
+  {name:'MF', start:300000, end:3000000, class:'MF'},
+  {name:'HF', start:3000000, end:30000000, class:'HF'},
+  {name:'VHF', start:30000000, end:300000000, class:'VHF'},
+  {name:'UHF', start:300000000, end:3000000000, class:'UHF'},
+  {name:'SHF', start:3000000000, end:30000000000, class:'SHF'},
+  {name:'EHF', start:30000000000, end:3e11, class:'EHF'}
+];
+
+// Letter bands (equal width)
+const letterBands = [
+  {name:'L', start:1e9, end:2e9, class:'L'},
+  {name:'S', start:2e9, end:4e9, class:'S'},
+  {name:'C', start:4e9, end:8e9, class:'C'},
+  {name:'X', start:8e9, end:12e9, class:'X'},
+  {name:'Ku', start:12e9, end:18e9, class:'Ku'},
+  {name:'K', start:18e9, end:27e9, class:'K'},
+  {name:'Ka', start:27e9, end:40e9, class:'Ka'},
+  {name:'V', start:40e9, end:75e9, class:'V'},
+  {name:'W', start:75e9, end:110e9, class:'W'}
+];
+
+function logScale(f) {
+  return ((Math.log10(f)-Math.log10(fmin)) / (Math.log10(fmax)-Math.log10(fmin)))*width + 50;
+}
+
+function formatFreq(f) {
+  if(f>=1e9) return (f/1e9)+'GHz';
+  if(f>=1e6) return (f/1e6)+'MHz';
+  if(f>=1e3) return (f/1e3)+'kHz';
+  return f+'Hz';
+}
+
+// Draw top row (common names)
+function drawCommonNames(){
+  commonNames.forEach(b=>{
+    let xStart = logScale(b.start);
+    let xEnd = logScale(b.end);
+    let boxWidth = xEnd - xStart;
+    if(boxWidth < minWidth){
+      boxWidth = minWidth;
+      xEnd = xStart + boxWidth;
+    }
+
+    const rect = document.createElementNS(svgNS,'rect');
+    rect.setAttribute('x', xStart);
+    rect.setAttribute('y',50);
+    rect.setAttribute('width', boxWidth);
+    rect.setAttribute('height', boxHeight);
+    rect.setAttribute('class','band-box '+b.class);
+    svg.appendChild(rect);
+
+    const textName = document.createElementNS(svgNS,'text');
+    textName.setAttribute('x', xStart + boxWidth/2);
+    textName.setAttribute('y', 50 + boxHeight/2 + 4);
+    textName.setAttribute('class','band-label');
+    textName.textContent = b.name;
+    svg.appendChild(textName);
+
+    const textRange = document.createElementNS(svgNS,'text');
+    textRange.setAttribute('x', xStart + boxWidth/2);
+    const yRange = 50 + boxHeight + 15;
+    textRange.setAttribute('y', yRange);
+    textRange.setAttribute('class','band-range');
+    textRange.textContent = formatFreq(b.start)+' - '+formatFreq(b.end);
+
+    b.freqYBottom = yRange + 5; // position below frequency text for diagonal line
+    b.boxBottomY = 50 + boxHeight; // bottom of the box
+    svg.appendChild(textRange);
+  });
+}
+
+// Draw bottom row (letter bands)
+function drawLetterBands(){
+  const startY = 220;
+  const totalBands = letterBands.length;
+  const fullBoxWidth = width / totalBands; 
+  const boxWidth = fullBoxWidth * 0.8;
+  const spacing = boxWidth;
+  const xShift = 225;
+
+  let bottomStartX = xShift;
+  let bottomEndX = xShift + (totalBands-1)*spacing + boxWidth;
+
+  letterBands.forEach((b, i)=>{
+    const xStart = xShift + i * spacing;
+
+    const rect = document.createElementNS(svgNS,'rect');
+    rect.setAttribute('x', xStart);
+    rect.setAttribute('y', startY);
+    rect.setAttribute('width', boxWidth);
+    rect.setAttribute('height', boxHeight);
+    rect.setAttribute('class','band-box '+b.class);
+    svg.appendChild(rect);
+
+    const textName = document.createElementNS(svgNS,'text');
+    textName.setAttribute('x', xStart + boxWidth/2);
+    textName.setAttribute('y', startY + boxHeight/2 + 4);
+    textName.setAttribute('class','band-label');
+    textName.textContent = b.name;
+    svg.appendChild(textName);
+
+    const textRange = document.createElementNS(svgNS,'text');
+    textRange.setAttribute('x', xStart + boxWidth/2);
+    textRange.setAttribute('y', startY + boxHeight + 15);
+    textRange.setAttribute('class','band-range');
+    textRange.textContent = formatFreq(b.start)+' - '+formatFreq(b.end);
+    svg.appendChild(textRange);
+  });
+
+  // Diagonal connectors (to below frequency text)
+  const bottomY = startY;
+
+  const uhfX = logScale(1e9);
+  const uhfLabel = commonNames.find(b=>b.name==='UHF');
+  const leftLine = document.createElementNS(svgNS,'line');
+  leftLine.setAttribute('x1', bottomStartX);
+  leftLine.setAttribute('y1', bottomY);
+  leftLine.setAttribute('x2', uhfX);
+  leftLine.setAttribute('y2', uhfLabel.freqYBottom); // below frequency text
+  leftLine.setAttribute('class','connector');
+  svg.appendChild(leftLine);
+
+  const ehfX = logScale(110e9);
+  const ehfLabel = commonNames.find(b=>b.name==='EHF');
+  const rightLine = document.createElementNS(svgNS,'line');
+  rightLine.setAttribute('x1', bottomEndX);
+  rightLine.setAttribute('y1', bottomY);
+  rightLine.setAttribute('x2', ehfX);
+  rightLine.setAttribute('y2', ehfLabel.freqYBottom);
+  rightLine.setAttribute('class','connector');
+  svg.appendChild(rightLine);
+
+  // Vertical guide lines from bottom of top boxes to where diagonals start on bottom row
+  const leftGuide = document.createElementNS(svgNS,'line');
+  leftGuide.setAttribute('x1', uhfX);
+  leftGuide.setAttribute('y1', uhfLabel.boxBottomY);
+  leftGuide.setAttribute('x2', uhfX);
+  leftGuide.setAttribute('y2', uhfLabel.freqYBottom);
+  leftGuide.setAttribute('class','vertical-guide');
+  svg.appendChild(leftGuide);
+
+  const rightGuide = document.createElementNS(svgNS,'line');
+  rightGuide.setAttribute('x1', ehfX);
+  rightGuide.setAttribute('y1', ehfLabel.boxBottomY);
+  rightGuide.setAttribute('x2', ehfX);
+  rightGuide.setAttribute('y2', ehfLabel.freqYBottom);
+  rightGuide.setAttribute('class','vertical-guide');
+  svg.appendChild(rightGuide);
+}
+
+drawCommonNames();
+drawLetterBands();
+</script>
+
+</body>
+</html>
