@@ -1,375 +1,279 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8" />
+    <title>PCDR | Home</title>
+    <!-- Largely based on these:
+         - https://getbootstrap.com/docs/5.3/examples/heroes/
+         - https://getbootstrap.com/docs/5.3/examples/navbars/
+         - https://getbootstrap.com/docs/5.3/examples/navbar-fixed/
+         -->
+    <script src="assets/color-modes.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <meta name="theme-color" content="#712cf9" />
+    <style>
+      #top-of-page-header {
+        margin-top: 3.5rem;
+      }
+      footer {
+        margin-top: 2rem;
+      }
+      .b-example-divider {
+        width: 100%;
+        height: 1rem;
+        background-color: #0000001a;
+        border: solid rgba(0, 0, 0, 0.15);
+        border-width: 1px 0;
+        box-shadow:
+          inset 0 0.5em 1.5em #0000001a,
+          inset 0 0.125em 0.5em #00000026;
+      }
+      .bi {
+        vertical-align: -0.125em;
+        fill: currentColor;
+      }
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .btn-bd-primary {
+        /* Renamed 'violet' to 'wasviolet' because I didn't know what color I was going to change it to */
+        --bd-wasviolet-bg: #004461;
+        --bd-wasviolet-rgb: 112.520718, 44.062154, 249.437846;
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-wasviolet-bg);
+        --bs-btn-border-color: var(--bd-wasviolet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #1183b1;
+        --bs-btn-hover-border-color: #00383f;
+        --bs-btn-focus-shadow-rgb: var(--bd-wasviolet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #00a2aa;
+        --bs-btn-active-border-color: #00697b;
+      }
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+      .bd-mode-toggle .bi {
+        width: 1em;
+        height: 1em;
+      }
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+      dl.mainpage dt {
+        font-size: 1.7rem;
+      }
+      dl.mainpage dd {
+        padding-left: 1.5rem;
+      }
+      dl.mainpage dd {
+        padding-left: 1.5rem;
+      }
+      hr#just-before-aboutsection {
+        margin-top: 6rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- This svg: icons for use in other parts of this file -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      <symbol id="check2" viewBox="0 0 16 16">
+        <path
+          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
+        ></path>
+      </symbol>
+      <symbol id="circle-half" viewBox="0 0 16 16">
+        <path
+          d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"
+        ></path>
+      </symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path
+          d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"
+        ></path>
+        <path
+          d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"
+        ></path>
+      </symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path
+          d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"
+        ></path>
+      </symbol>
+    </svg>
+    <!-- This div: Theme toggle, copied from the bootstrap example -->
+    <div
+      class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle"
+    >
+      <button
+        class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        aria-label="Toggle theme (auto)"
+      >
+        <svg class="bi my-1 theme-icon-active" aria-hidden="true">
+          <use href="#circle-half"></use>
+        </svg>
+        <span class="bi my-1 theme-icon-active visually-hidden" id="bd-theme-text">Theme</span>
+      </button>
+      <ul
+        class="dropdown-menu dropdown-menu-end shadow"
+        aria-labelledby="bd-theme-text"
+      >
+        <li>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center"
+            data-bs-theme-value="light"
+            aria-pressed="false"
+          >
+            <svg class="bi me-2 opacity-50" aria-hidden="true">
+              <use href="#sun-fill"></use>
+            </svg>
+            Light
+            <svg class="bi ms-auto d-none" aria-hidden="true">
+              <use href="#check2"></use>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center"
+            data-bs-theme-value="dark"
+            aria-pressed="false"
+          >
+            <svg class="bi me-2 opacity-50" aria-hidden="true">
+              <use href="#moon-stars-fill"></use>
+            </svg>
+            Dark
+            <svg class="bi ms-auto d-none" aria-hidden="true">
+              <use href="#check2"></use>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center active"
+            data-bs-theme-value="auto"
+            aria-pressed="true"
+          >
+            <svg class="bi me-2 opacity-50" aria-hidden="true">
+              <use href="#circle-half"></use>
+            </svg>
+            Auto
+            <svg class="bi ms-auto d-none" aria-hidden="true">
+              <use href="#check2"></use>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+      <nav class="navbar fixed-top bg-body-tertiary">
+        <!-- Note: can add class navbar-expand-md to the `nav` to make it expand when screen is wide enough -->
+        <div class="container">
+          <span class="navbar-brand">PCDR</span>
+          <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          >
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <!-- <li class="nav-item"><a class="nav-link" href="#">Direction finding game</a></li> -->
+              <li class="nav-item"><a class="nav-link" href="https://github.com/python-can-define-radio/python-course/">Python course</a></li>
+              <li class="nav-item"><a class="nav-link" href="https://github.com/python-can-define-radio/sdr-course/">SDR course</a></li>
+            </ul>
+            
+          </div>
+        </div>
+      </nav>
+    <header id="top-of-page-header" class="text-center">
+      <h1 class="display-5 fw-bold text-body-emphasis">Python Can Define Radio</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-1">
+          A collection of tools and resources for learning Python, Software Defined Radio, and related topics.
+        </p>
+      </div>
+    </header>
+    <div class="b-example-divider"></div>
+    <main class="container">
+      <div class="bg-body-tertiary p-5 rounded">
+        <dl class="mainpage">
+          <dt>Direction Finding</dt>
+          <dd>Direction Finding Game (Link is coming before the end of May 2026) -- collect Lines of Bearing (LOBs); complete missions; learn; have fun.</dd>
 
-<head>
-	<title>Python can define radio</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+          <dt>Learn Python</dt>
+          <dd>
+            To view our curriculum:
+            <ol>
+              <li>Go to <a href="https://github.com/python-can-define-radio/python-course/tree/main/classroom_activities/Ch01_Basics">Chapter 1 of the python-course</a></li>
+              <li>Proceed through the lessons, starting with <a href="https://github.com/python-can-define-radio/python-course/blob/main/classroom_activities/Ch01_Basics/ex_1a_print_and_inputs.md">"ex_1a_print_and_inputs.md"</a>. Note: when navigating between lessons on Github, you'll see three columns. Click on the title in the <b>left</b> column of the table. Clicking the middle column will show the most recent edit for that file, which is usually not what a student is trying to do.
+              </li>
+            </ol>
+          </dd>
+          
+          <dt>Explore SDRs</dt>
+          <dd>The <a href="https://github.com/python-can-define-radio/sdr-course/blob/main/resources/README.md">sdr-course resources README</a> has a list of thirty or so links. See also our <a href="https://github.com/python-can-define-radio/sdr-course">sdr-course homepage</a>.</dd>
 
-	<style>
-		*,
-		*::before,
-		*::after {
-			box-sizing: border-box;
-		}
+          <dt>Everything else on this website</dt>
+          <dd>
+            <ul>
+              <li><a href="common-and-letter-freq-bands/">Frequency Bands diagram</a>: shows the two common naming conventions (VHF/UHF/etc and X/Ku/etc)</li>
+              <li><a href="vswr/">Voltage-Standing-Wave Ratio (VSWR) visualizer</a>: interactively adjust reflected power to see the resulting waves.</li>
+              <li><a href="sigrecord/">Signal recording simulator</a>: loosely based on the Universal Radio Hacker interface for recording a signal.</li>
+            </ul>
+          </dd>
 
-		body {
-			height: 100vh;
-			position: relative;
-			font-family: "Anton", sans-serif;
-			justify-content: center;
-			align-items: center;
-		}
-
-		#BORDER1 img {
-			border: 15px groove green;
-			height: 250px;
-			display: inline-block;
-		}
-
-		p {
-			text-align: center;
-			color: #1721d3;
-			font-size: 1.5em;
-			margin-left: 100px;
-			margin-right: 100px;
-		}
-
-		#BORDER1 {
-			background-color: #edaa3099;
-			padding: 10px;
-			text-align: center;
-		}
-
-		#LINKSLEFT {
-			font-family: Comic Sans MS;
-			font-size: 20px;
-			float: left;
-		}
-
-		#LINKSCENTER {
-			font-family: Comic Sans MS;
-			font-size: 20px;
-			text-align: center;
-		}
-
-		.scrolling {
-			height: 60px;
-			width: 80%;
-			margin-left: 10%;
-			overflow: hidden;
-			position: relative;
-		}
-
-		.scrolling h1 {
-			color: #1721d3;
-			text-align: center;
-			font-size: 40px;
-			font-family: 'Arima Madurai', cursive;
-			letter-spacing: -3px;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			margin: 0;
-			line-height: 50px;
-		}
-
-		.container {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			background: #edaa3099;
-			height: 250px;
-		}
-
-		.links {
-			display: grid;
-			width: 800px;
-			height: 200px;
-			grid-template-columns: auto auto auto;
-			margin-top: 30px;
-		}
-
-		.button {
-			color: #fff !important;
-			text-transform: uppercase;
-			text-decoration: none;
-			background: #1721d3;
-			padding: 10px;
-			border-radius: 25px;
-			display: inline-block;
-			border: none;
-			transition: all 0.4s ease 0s;
-		}
-
-		.button:hover {
-			background: #434343;
-			letter-spacing: 1px;
-			-webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
-			-moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
-			box-shadow: 5px 40px 10px rgba(0, 0, 0, 0.57);
-			text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
-			transition: all 0.4s ease 0s;
-			border-radius: 0px;
-			font-weight: 700;
-		}
-
-		#navbar {
-			width: 90%;
-			background-color: #1212edf5;
-			overflow: auto;
-			border-radius: 20px;
-			opacity: 100%;
-			margin-left: 7%;
-			border: 1px solid black;
-		}
-
-		#navbar a {
-			float: left;
-			padding: 12px;
-			color: white;
-			text-decoration: none;
-			font-size: 18px;
-		}
-
-		#navbar a:hover {
-			background-color: #000;
-		}
-
-		.active {
-			background-color: #04AA6D;
-			height: 50px;
-		}
-
-		.dropdown {
-			float: left;
-			overflow: hidden;
-		}
-
-		.dropdown .dropbtn {
-			font-size: 18px;
-			border: none;
-			cursor: pointer;
-			outline: none;
-			color: white;
-			padding: 14px 16px;
-			background-color: inherit;
-			font-family: inherit;
-			margin: 0;
-		}
-
-		#navbar a:hover,
-		.dropdown:hover .dropbtn {
-			background-color: #434343;
-		}
-
-		.dropdown-content {
-			display: none;
-			position: absolute;
-			background-color: black;
-			min-width: 160px;
-			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-			z-index: 1;
-		}
-
-		.dropdown-content a {
-			float: none;
-			color: black;
-			padding: 12px 16px;
-			text-decoration: none;
-			display: block;
-			text-align: left;
-		}
-
-		.dropdown:hover .dropdown-content {
-			display: block;
-		}
-
-		.content {
-			margin-left: 75px;
-			font-size: 30px;
-		}
-
-		.sticky {
-			position: fixed;
-			top: 0;
-			width: 100%;
-		}
-
-		.sticky+.content {
-			padding-top: 60px;
-		}
-
-		#navbar input[type=text] {
-			float: right;
-			padding: 6px;
-			border: none;
-			margin-right: 16px;
-			margin-top: 8px;
-			font-size: 17px;
-		}
-
-		/* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
-		@media screen and (max-width: 600px) {
-
-			#navbar a,
-			#navbar input[type=text],
-			#navbar .search-container button {
-				float: none;
-				display: block;
-				text-align: left;
-				width: 100%;
-				margin: 0;
-				padding: 14px;
-			}
-
-			#navbar input[type=text] {
-				border: 1px solid #ccc;
-			}
-		}
-
-		#navbar .search-container {
-			float: right;
-		}
-
-		#navbar .search-container button {
-			float: right;
-			padding: 6px 10px;
-			margin-right: 5px;
-			margin-top: 8px;
-			background: #ddd;
-			font-size: 17px;
-			border: none;
-			cursor: pointer;
-			border-radius: 50%;
-		}
-
-		#navbar .search-container button:hover {
-			background: #ccc;
-		}
-
-		.window {
-			margin-left: 35%;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(-45deg, #0a1433 0%, #222b3f 100%);
-			border-radius: 100%;
-			overflow: hidden;
-		}
-
-		.small_font {
-			font-size: 12px;
-			color: #434343;
-		}
-	</style>
-</head>
-
-<body style="background: #8cff45">
-	<hr>
-	<input type="color" id="colorPicker"> Choose your background color.<br />
-	<input type="color" id="colorPicker2"> Choose your foreground color.
-	<div class="scrolling">
-		<h1>Welcome to Python Can Define Radio.</h1>
-	</div>
-	<div id="navbar">
-		<a class="active" href="https://github.com/python-can-define-radio" target="_blank"><i class="fa fa-plane"></i>
-			PCDR</a>
-		<div class="dropdown">
-			<button class="dropbtn"><i class="fa fa-git"></i> Python
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="dropdown-content">
-				<a href='https://github.com/python-can-define-radio/python-course/tree/main/classroom_activities'
-					target="_blank">Python lessons</a>
-				<a href='https://github.com/python-can-define-radio/python-course/blob/main/resources/README.md'
-					target="_blank">Python resources</a>
-			</div>
-		</div>
-		<div class="dropdown">
-			<button class="dropbtn"><i class="fa fa-git"></i> SDR
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="dropdown-content">
-				<a href='https://github.com/python-can-define-radio/sdr-course/tree/main/classroom_activities'
-					target="_blank">SDR lessons</a>
-				<a href='https://github.com/python-can-define-radio/sdr-course/tree/main/resources/README.md'
-					target="_blank">SDR resources</a>
-			</div>
-		</div>
-		<div class="dropdown">
-			<button class="dropbtn"><i class="fa fa-link"></i> Other Links
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="dropdown-content">
-				<a href="https://mynasadata.larc.nasa.gov/basic-page/electromagnetic-spectrum-diagram" class="spectrum"
-					target="_blank">High res Spectrum diagram</a>
-				<a href="common-and-letter-freq-bands/" class="bands" target="_blank">Frequency Bands</a>
-				<a href="vswr/" class="VSWR" target="_blank">VSWR demo</a>
-				<a href="sigrecord/" class="SIGR" target="_blank">Record a signal</a>
-			</div>
-		</div>
-	</div>
-	<hr>
-
-	<div id="BORDER1">
-		<a href='https://github.com/python-can-define-radio/python-course' target="_blank"><img
-				src="./images/python_logo.png" alt="Python Logo"></a>
-		<a href='https://github.com/python-can-define-radio/sdr-course' target="_blank"><img src="./images/hackrf.jpeg"
-				alt="Picture of a HackrfOne"></a>
-		<a href='https://github.com/python-can-define-radio/python-course' target="_blank"><img
-				src="./images/python_logo.png" alt="Python Logo"></a>
-	</div>
-	<hr>
-	<div class="container" id="container">
-		<div class="links">
-			<div id="LINKSLEFT">
-				<a class="button"
-					href='https://github.com/python-can-define-radio/python-course/blob/main/resources/README.md'
-					target="_blank">Python resources</a>
-			</div>
-			<div id="LINKSCENTER">
-				<a class="button"
-					href='https://github.com/python-can-define-radio/sdr-course/tree/main/resources/README.md'
-					target="_blank">SDR resources</a>
-				<br>
-
-			</div>
-		</div>
-	</div>
-	<p class="small_font"><b>Hosted by:</b><br />
-		<em>James-pcdr<br />Wolverine-itb-pcdr<br />
-	</p>
-
-	<script>
-		window.onscroll = function () { myFunction() };
-
-		var navbar = document.getElementById("navbar");
-		var sticky = navbar.offsetTop;
-
-		function myFunction() {
-			if (window.pageYOffset >= sticky) {
-				navbar.classList.add("sticky")
-			} else {
-				navbar.classList.remove("sticky");
-			}
-		}
-		const colorPicker = document.getElementById("colorPicker");
-		const colorPicker2 = document.getElementById("colorPicker2");
-		const thisid = document.getElementById("BORDER1");
-		const thisid2 = document.getElementById("container");
-		colorPicker.addEventListener("input", function () {
-			document.body.style.backgroundColor = this.value;
-		});
-		colorPicker2.addEventListener("input", function () {
-			thisid.style.backgroundColor = this.value;
-		});
-		colorPicker2.addEventListener("input", function () {
-			thisid2.style.backgroundColor = this.value;
-		});
-	</script>
-
-</body>
-
+          <dt>External links</dt>
+          <dd>
+            <ul>
+              <li><a href="https://mynasadata.larc.nasa.gov/basic-page/electromagnetic-spectrum-diagram">Electromagnetic Spectrum diagram on NASA's website</a>: One of the few EMS diagrams that shows atmospheric opacity.</li>
+            </ul>
+          </dd>
+        </dl>
+        <hr id="just-before-aboutsection"/>
+        <h2>About</h2>
+        <p>
+          We created most of the content here and on <a href="https://github.com/python-can-define-radio/">github.com/python-can-define-radio</a> during our time teaching.
+        </p>
+      </div>
+      <footer>
+        Created by <a href="https://github.com/james-pcdr">james-pcdr</a> and <a href="https://github.com/wolverine-is-the-best">Wolverine-itb-pcdr</a>
+      </footer>
+      <!-- 
+      
+      TODO:
+      - sticky bar that is initially not at top of page (like in prev version)
+      - animation on buttons within the dropdown menu
+      - decide page/version structure for DFing game
+      - figure out how to compile the DFing game dart code to JS so we can upload it
+      - colors ?
+      -->
+    </main>
+  </body>
 </html>
