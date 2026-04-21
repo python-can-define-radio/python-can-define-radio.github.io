@@ -4,13 +4,14 @@
     <meta charset="utf-8" />
     <title>PCDR | Home</title>
     <!-- Largely based on these:
-         - https://getbootstrap.com/docs/5.3/examples/heroes/
-         - https://getbootstrap.com/docs/5.3/examples/navbars/
-         - https://getbootstrap.com/docs/5.3/examples/navbar-fixed/
-         -->
-    <script src="assets/color-modes.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+      - https://getbootstrap.com/docs/5.3/examples/heroes/
+      - https://getbootstrap.com/docs/5.3/examples/navbars/
+      - https://getbootstrap.com/docs/5.3/examples/navbar-fixed/
+      -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+      <script src="assets/color-modes.js"></script>
     <meta name="theme-color" content="#712cf9" />
     <style>
       #top-of-page-header {
@@ -74,6 +75,7 @@
       }
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
+        background-color: var(--bs-body-color);
       }
       dl.mainpage dt {
         font-size: 1.7rem;
@@ -101,6 +103,14 @@
       }
       .nav-link:hover {
         background: #ccc;
+      }
+      .fa-github {
+        text-decoration: none;
+        color: var(--bs-body-color);
+      } 
+      #dropdown-positioned {
+        margin-top: 30px;
+        min-width: 250px;
       }
 
     </style>
@@ -215,25 +225,27 @@
     <nav class="navbar bg-body-tertiary" id="navbar">
         <!-- Note: can add class navbar-expand-md to the `nav` to make it expand when screen is wide enough -->
         <div class="container">
-          <span class="navbar-brand">PCDR</span>
-          <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          >
-          <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <!-- <li class="nav-item"><a class="nav-link" href="#">Direction finding game</a></li> -->
-              <li class="nav-item"><a class="nav-link" href="https://github.com/python-can-define-radio/python-course/">Python course</a></li>
-              <li class="nav-item"><a class="nav-link" href="https://github.com/python-can-define-radio/sdr-course/">SDR course</a></li>
-            </ul>
+          <span class="navbar-brand">
+            <a class="fa fa-github fa-2x" href="https://github.com/python-can-define-radio/"></a>
+          </span>
+          <div class="dropdown">
+            <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            >
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" id="dropdown-positioned">
+              <ul class="navbar-nav">
+                <!-- <li class="nav-item"><a class="nav-link" href="#">Direction finding game</a></li> -->
+                <li class="nav-item"><a class="nav-link" href="https://github.com/python-can-define-radio/python-course/">Python course</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/python-can-define-radio/sdr-course/">SDR course</a></li>
+              </ul>
             
+            </div>
           </div>
         </div>
       </nav>
@@ -282,13 +294,7 @@
       <footer>
         Created by <a href="https://github.com/james-pcdr">james-pcdr</a> and <a href="https://github.com/wolverine-is-the-best">Wolverine-itb-pcdr</a>
       </footer>
-      <!-- 
       
-      TODO:
-      - decide page/version structure for DFing game
-        - animation on buttons to select direction finding game versions
-      - figure out how to compile the DFing game dart code to JS so we can upload it
-      -->
     </main>
     <script>
       window.onscroll = function () { myFunction() };
@@ -306,3 +312,11 @@
     </script>
   </body>
 </html>
+
+
+<!-- 
+      TODO:
+      - decide page/version structure for DFing game
+        - animation on buttons to select direction finding game versions
+      - figure out how to compile the DFing game dart code to JS so we can upload it
+      -->
