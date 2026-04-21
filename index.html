@@ -87,6 +87,15 @@
       hr#just-before-aboutsection {
         margin-top: 6rem;
       }
+      .sticky {
+			position: fixed;
+			top: 0;
+			width: 100%;
+      }
+
+      .sticky+.content {
+        padding-top: 60px;
+      }
     </style>
   </head>
   <body>
@@ -187,7 +196,16 @@
         </li>
       </ul>
     </div>
-      <nav class="navbar fixed-top bg-body-tertiary">
+      
+    <header id="top-of-page-header" class="text-center">
+      <h1 class="display-5 fw-bold text-body-emphasis">Python Can Define Radio</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-1">
+          A collection of tools and resources for learning Python, Software Defined Radio, and related topics.
+        </p>
+      </div>
+    </header>
+    <nav class="navbar bg-body-tertiary" id="navbar">
         <!-- Note: can add class navbar-expand-md to the `nav` to make it expand when screen is wide enough -->
         <div class="container">
           <span class="navbar-brand">PCDR</span>
@@ -212,14 +230,6 @@
           </div>
         </div>
       </nav>
-    <header id="top-of-page-header" class="text-center">
-      <h1 class="display-5 fw-bold text-body-emphasis">Python Can Define Radio</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-1">
-          A collection of tools and resources for learning Python, Software Defined Radio, and related topics.
-        </p>
-      </div>
-    </header>
     <div class="b-example-divider"></div>
     <main class="container">
       <div class="bg-body-tertiary p-5 rounded">
@@ -268,12 +278,25 @@
       <!-- 
       
       TODO:
-      - sticky bar that is initially not at top of page (like in prev version)
       - animation on buttons within the dropdown menu
       - decide page/version structure for DFing game
       - figure out how to compile the DFing game dart code to JS so we can upload it
       - colors ?
       -->
     </main>
+    <script>
+      window.onscroll = function () { myFunction() };
+
+		var navbar = document.getElementById("navbar");
+		var sticky = navbar.offsetTop;
+
+		function myFunction() {
+			if (window.pageYOffset >= sticky) {
+				navbar.classList.add("sticky")
+			} else {
+				navbar.classList.remove("sticky");
+			}
+		}
+    </script>
   </body>
 </html>
