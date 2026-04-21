@@ -92,10 +92,17 @@
 			top: 0;
 			width: 100%;
       }
-
-      .sticky+.content {
-        padding-top: 60px;
+      .nav-link {
+        padding: 5px 5px 5px 5px;
+        margin-top: 10px;
+        font-size: 17px;
+        border: none;
+        cursor: pointer;
       }
+      .nav-link:hover {
+        background: #ccc;
+      }
+
     </style>
   </head>
   <body>
@@ -278,10 +285,9 @@
       <!-- 
       
       TODO:
-      - animation on buttons within the dropdown menu
       - decide page/version structure for DFing game
+        - animation on buttons to select direction finding game versions
       - figure out how to compile the DFing game dart code to JS so we can upload it
-      - colors ?
       -->
     </main>
     <script>
