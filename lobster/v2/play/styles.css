@@ -41,7 +41,7 @@ h2 {
 }
 
 .life {
-    /* background-color: #cfc; */
+    background-color: #cfc;
     border: 2px solid #555;
     border-radius: 8px;
     position: absolute;
